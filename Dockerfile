@@ -7,16 +7,17 @@ RUN apk update && apk upgrade
 RUN apk add openssh curl \
   && rm -rf /var/cache/apk/*
 
-RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
+#RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
+RUN rm /etc/ssh/ssh_host_rsa_key*
 RUN echo "root:$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 36 ; echo '')" | chpasswd
 
 COPY entrypoint.sh .
 COPY sshd_config /etc/ssh/sshd_config
 
 RUN mkdir ~/.ssh \
- && chmod 0700 ~/.ssh \
- && touch ~/.ssh/authorized_keys \
- && chmod 0600 ~/.ssh/authorized_keys
+  && chmod 0700 ~/.ssh \
+  && touch ~/.ssh/authorized_keys \
+  && chmod 0600 ~/.ssh/authorized_keys
 
 EXPOSE 22
 
