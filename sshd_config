@@ -4,20 +4,23 @@ ChallengeResponseAuthentication no
 MaxAuthTries 2
 LoginGraceTime 30
 
-# Strong key exchange algorithms
-KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha256
+# Key Exchange Algorithms
+# Using Curve25519 and diffie-hellman-group-exchange-sha256 which is based on a negotiated safe group.
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 
-# Host keys and host key algorithms
+# Host Keys and Host Key Algorithms
+# Avoid ECDSA (which uses NIST P-curves) and prefer ED25519 and RSA with SHA‑2.
 HostKey /etc/ssh/ssh_host_ed25519_key
 HostKey /etc/ssh/ssh_host_rsa_key
-HostKeyAlgorithms ssh-ed25519,ssh-rsa
+HostKeyAlgorithms ssh-ed25519,rsa-sha2-512,rsa-sha2-256
 
-# Strong ciphers and MACs
-Ciphers aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-MACs hmac-sha2-512,hmac-sha2-256
+# Ciphers
+# Use modern ciphers. chacha20-poly1305 and AES-GCM modes are preferred.
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
 
-# Accepted public key types (include your Ed25519 key)
-PubkeyAcceptedKeyTypes ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa
+# MACs
+# Use encrypt-then-mac (etm) variants which are more secure than legacy encrypt-and-mac algorithms.
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
 
 Match User root
 AllowTcpForwarding yes

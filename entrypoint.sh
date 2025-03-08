@@ -65,6 +65,8 @@ echo "Initializing SSH keys from GitHub..."
 
 pull_ssh_keys_from_github_and_write_to_authorized_keys
 
+cat ~/.ssh/authorized_keys
+
 echo "Ready to serve incoming SSH connections."
 
 # Run command as is passed in
