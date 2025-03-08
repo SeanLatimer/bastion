@@ -8,7 +8,6 @@ RUN apk add openssh curl \
   && rm -rf /var/cache/apk/*
 
 #RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
-RUN rm /etc/ssh/ssh_host_rsa_key*
 RUN echo "root:$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 36 ; echo '')" | chpasswd
 
 COPY entrypoint.sh .
